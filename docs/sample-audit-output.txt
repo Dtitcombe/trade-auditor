@@ -1,0 +1,19 @@
+Trade Auditor — verified run against the frozen test set (Night 2, Oct 23, 2026)
+Command: python run_audit.py  (data/trades_sample.csv vs data/expected_verdicts.md)
+Result: 10/10 verdicts match the frozen answer key (6 PASS / 4 FAIL).
+
+Audited 10 trades from data/trades_sample.csv
+
+#1  2026-10-19 09:47  GOLD S&D long  ->  PASS
+#2  2026-10-19 10:22  GOLD Breakout long  ->  FAIL  (800 against a breakout; gold gate: no HTF alignment — the leak pattern)
+#3  2026-10-20 09:38  GOLD Breakout short  ->  PASS  (gate satisfied; orange news at normal size, as ruled)
+#4  2026-10-20 11:05  NAS S&D long  ->  PASS  (early BE justified: long consolidation; 800-middle caution noted)
+#5  2026-10-21 08:32  GOLD S&D short  ->  FAIL  (red-folder news — never traded)
+#6  2026-10-21 10:14  GOLD Breakout long  ->  FAIL  (gold gate; risked $250 with $100 of lockout room left, no size cut; make-back sizing in the journal's own words)
+#7  2026-10-22 09:52  GOLD S&D long  ->  PASS  (added to the winner at half size only)
+#8  2026-10-22 10:41  SPX Breakout short  ->  PASS  (grading count 4 of 4, zero averages in the way)
+#9  2026-10-23 09:44  NAS Breakout long  ->  FAIL  (800 against; grading count only 1 of 4)
+#10 2026-10-23 13:20  GOLD Fib short  ->  PASS  (model named before entry; risk inside cap; size cut after the day's first loss)
+
+Score: 6 PASS / 4 FAIL — matches data/expected_verdicts.md exactly.
+Full per-rule findings with citations are printed by run_audit.py.

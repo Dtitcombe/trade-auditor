@@ -1,0 +1,17 @@
+{
+  "name": "trade-auditor",
+  "display_name": "Trade Auditor",
+  "hackathon": "Open Agent Hackathon 2026",
+  "track": "02 - The Agent That Can Explain Why",
+  "challenge_question": "Why did this trade pass or fail my system?",
+  "builder": "David Titcombe (solo)",
+  "sponsor_tech": {
+    "zetaris": "Data layer. All journal lookups (trades + notes, joined) go through Zetaris as the data harness; the agent never reads journal files directly. Local CSV reader with the identical contract is the fallback until the instance is provisioned (see src/auditor/data_pipe.py).",
+    "meterless": "Engine pattern. Meterless publishes its engines (World State, Memory, Reasoning, Intent, Swarm) as a local-first, prompt-based context-layer pattern with a Context Packet structure — no SDK; builders recreate the pattern in their own stack. Recreated here in Python (src/auditor/context_packet.py): World State = the day's declared frame + running state; Memory = the journal row + day history every claim must cite; Reasoning = rule evaluation; Intent = the one question and its guardrails; Swarm = Planner / Executor / Evaluator working one packet in sequence.",
+    "cursor": "Build layer. Project built in Cursor; git history is the build log."
+  },
+  "data": {
+    "test_set": "data/trades_sample.csv",
+    "expected_verdicts": "data/expected_verdicts.md"
+  }
+}

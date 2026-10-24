@@ -1,0 +1,11 @@
+date,time_et,instrument,model,grade,dir,htf,ema800,news,risk_usd,result,pnl_usd,notes
+2026-10-19,09:47,GOLD,S&D,A,long,yes,with,none,180,win,342,"Textbook: liquidity grab into 1H demand, BOS, entered on the gap. Stop to BE at 1R."
+2026-10-19,10:22,GOLD,Breakout,C,long,no,against,none,200,loss,-200,"5-min breakout with no 1H structure underneath. 13 crossed 50 but HTF not aligned."
+2026-10-20,09:38,GOLD,Breakout,B,short,yes,with,orange,220,win,415,"13 crossed 50 down with HTF aligned; 800 below price falling. BE at 1R, ran to liquidity."
+2026-10-20,11:05,NAS,S&D,B,long,yes,middle,none,150,be,0,"Sat in consolidation a long time; moved stop to BE early per rule, scratched at BE."
+2026-10-21,08:32,GOLD,S&D,C,short,yes,with,red,250,loss,-250,"Entered 12 minutes before a red-folder CPI release. Full size. Straight to stop."
+2026-10-21,10:14,GOLD,Breakout,C,long,no,middle,none,250,loss,-238,"Second trade after the CPI loss. Sized UP to make the first loss back. No HTF, 800 flat in the middle."
+2026-10-22,09:52,GOLD,S&D,A,long,yes,with,none,200,win,520,"A setup; added to the winner at half size per sequence rule after 1R."
+2026-10-22,10:41,SPX,Breakout,A,short,yes,with,none,175,win,260,"Breakout with 4 of 4 EMAs aligned, zero averages in the way. Best breakout shape."
+2026-10-23,09:44,NAS,Breakout,C,long,no,against,orange,240,loss,-240,"Breakout against the 800 and against HTF. Only 1 of 4 EMAs in direction. PMI window."
+2026-10-23,13:20,GOLD,Fib,B,short,yes,with,none,160,win,305,"1-min 70% Fib model, 2:1 target, stop inside plan size. Model named before entry."
