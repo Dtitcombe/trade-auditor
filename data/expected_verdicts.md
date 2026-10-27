@@ -14,7 +14,7 @@ Verdict = process, not P&L. A loss can PASS; a win can FAIL.
 | 7 | 10-22 GOLD S&D long | PASS | Add to winner at HALF size only — done correctly |
 | 8 | 10-22 SPX Breakout short | PASS | Grading count: 4 of 4 EMAs aligned, zero in the way — top-grade breakout |
 | 9 | 10-23 NAS Breakout long | FAIL | Against HTF and against the 800; grading count 1 of 4 |
-| 10 | 10-23 GOLD Fib short | PASS | Model named before entry; risk inside cap; 2:1 plan per the Fib model |
+| 10 | 10-23 GOLD Fib short | FAIL | Second trade after a −$240 loss risks $160 with only $110 of lockout room left — over the room, so FAIL under the strict room rule (ruled Oct 24: no over-leveraging; only a changed ceiling lifts the room). Model named and risk inside the $250 cap do not save it. |
 
-Score: 6 PASS / 4 FAIL. Wins that FAIL: #6 would fail even if it had won.
+Score: 5 PASS / 5 FAIL. Wins that FAIL: #6 and #10 — both won money and failed on process.
 Losses that PASS: none in this set by P&L, but #4 (BE, $0) passes on process.

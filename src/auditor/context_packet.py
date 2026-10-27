@@ -1,10 +1,14 @@
 """The Context Packet — the Meterless pattern, recreated in Python.
 
-Meterless publishes its engines (World State, Memory, Reasoning, Intent,
-Swarm) as a local-first context-layer pattern — prompts and a packet
-structure, no SDK: "recreate the pattern in whatever language you're
-building in" (github.com/Meterless/Meterless). This module is that
-recreation for the Trade Auditor.
+Meterless publishes four engines as prompt-based specs + a packet
+structure, no SDK: H-MEM (hierarchical memory, provenance, trust
+ledger), World Model (event-sourced entity/context graph), Markovian
+(long runs in bounded chunks), Scout Intent (a signed execution
+contract; spec only) — "recreate the pattern in whatever language
+you're building in" (github.com/Meterless/Meterless). This module is
+that recreation for the Trade Auditor; see docs/meterless.md for the
+full component-to-engine mapping. Planner / Executor / Evaluator are
+roles working one packet in sequence, not a Meterless engine.
 
 Every audit travels as ONE packet. The Planner assembles it; the
 Executor reasons over it; the Evaluator verifies against it. Nothing
@@ -26,9 +30,9 @@ PACKET_VERSION = "1.0"
 def build_packet(trade, frame, day_trades):
     """Assemble the context packet for one trade's audit.
 
-    World State engine: the declared frame (risk cap, lockout) plus the
+    World Model pattern: the declared frame (risk cap, lockout) plus the
     day's running state (trades so far, P&L so far, lockout room left).
-    Memory engine: the raw journal row and the day's full history — the
+    H-MEM pattern: the raw journal row and the day's full history — the
     only evidence any step is allowed to cite.
     """
     idx = day_trades.index(trade)

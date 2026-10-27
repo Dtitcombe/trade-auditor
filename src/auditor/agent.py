@@ -1,19 +1,26 @@
 """The auditor: Planner -> Executor -> Evaluator.
 
-Built on Meterless's published engine pattern — World State, Memory,
-Reasoning, Intent, Swarm — recreated in Python, as their docs direct
-(github.com/Meterless/Meterless: prompt-based engines + a Context
-Packet structure, no SDK). Each audit travels as one Context Packet
-(see context_packet.py); nothing reaches a step except through it.
+Built on Meterless's published engine patterns, recreated in Python,
+as their docs direct (github.com/Meterless/Meterless: prompt-based
+engine specs + a Context Packet structure, no SDK). Each audit travels
+as one Context Packet (see context_packet.py); nothing reaches a step
+except through it. Mapping: World Model -> day frame + running state;
+H-MEM -> journal row + day history, every claim cited and verified
+(provenance); Markovian -> one bounded audit unit per trade; Scout
+Intent -> the one question + guardrails as the Planner's contract.
+Planner / Executor / Evaluator are roles working one packet in
+sequence — not a Meterless engine (swarm-orchestration is a future
+engine, not a current one).
 
-    Planner   (World State + Intent) — assembles the packet: the day's
-              declared frame, the day's running state, the one question.
-    Executor  (Reasoning) — evaluates each applicable rule against the
-              packet's memory, attaching cited field values as evidence.
-    Evaluator (Memory)      — verifies every citation against the raw
-              journal row in the packet, grades the process (never the
-              P&L), writes the one fix. The three steps working one
-              packet in sequence are the Swarm pattern at audit scale.
+    Planner   (World Model + Scout Intent) — assembles the packet: the
+              day's declared frame, the day's running state, the one
+              question and its guardrails.
+    Executor  (Markovian discipline) — evaluates each applicable rule
+              against the packet's memory in one bounded unit, attaching
+              cited field values as evidence.
+    Evaluator (H-MEM) — verifies every citation against the raw
+              journal row in the packet (provenance), grades the process
+              (never the P&L), writes the one fix.
 """
 
 import re
@@ -188,20 +195,19 @@ def _eval_sequence(trade, frame, day):
     findings = []
     if pnl_before < 0:
         room = frame["daily_lockout_usd"] + pnl_before  # pnl_before is negative
-        prev = prior[-1]
-        # INTERPRETATION, flagged for the trader's ruling (Sat Oct 24
-        # weekly check): the room clause is enforced together with the
-        # same-or-cut test — a second trade that CUT its size after a
-        # loss is inside the rule's discipline; one that held or raised
-        # size past the day's remaining room is not. (Test-set trades #6
-        # vs #10 are the two sides of this line.)
-        if trade["risk_usd"] > room and trade["risk_usd"] >= prev["risk_usd"]:
+        # STRICT ROOM RULE, ruled by the trader at the Sat Oct 24 weekly
+        # check ("I shouldn't be over leveraging at all"): a second
+        # trade that risks more than the day's remaining lockout room
+        # FAILS, cut size or not. The only exception is changing the
+        # declared ceiling itself. (Test-set trade #10 is the case:
+        # $160 risked with $110 room left.)
+        if trade["risk_usd"] > room:
             findings.append(_finding(
                 "sequence", "fail",
                 f"Risked ${trade['risk_usd']:.0f} with only ${room:.0f} of "
-                f"lockout room left after ${-pnl_before:.0f} of losses, "
-                f"without cutting size — the second trade never risks "
-                f"more than the day has left.",
+                f"lockout room left after ${-pnl_before:.0f} of losses — "
+                f"the second trade never risks more than the day has "
+                f"left.",
                 [_cite("risk_usd", trade["risk_usd"])]))
         prev = prior[-1]
         if prev["result"] == "loss" and trade["risk_usd"] > prev["risk_usd"]:

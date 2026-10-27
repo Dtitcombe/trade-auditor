@@ -39,17 +39,19 @@ A trade can lose money and PASS. A trade can make money and FAIL. That is the po
   (Two-mode pipe: a local CSV reader with the identical contract runs until the
   Zetaris instance is provisioned; the swap is one function — see
   `src/auditor/data_pipe.py`.)
-- **Meterless (engine pattern):** Meterless publishes its engines as a
-  local-first context-layer pattern — prompt-based, no SDK — and directs
-  builders to recreate the pattern in their own stack. This project is that
-  recreation in Python: the **Context Packet** structure carries each audit;
-  **World State** = the day's declared frame + running state; **Memory** =
-  the journal row + day history every claim must cite; **Reasoning** = the
-  rule evaluation; **Intent** = the one question plus its guardrails (grade
-  process, never P&L; never predict; never signal); **Swarm** = the
-  Planner / Executor / Evaluator roles working one packet in sequence.
-  (Meterless's own use-case list names this build: "Trading Journal
-  Intelligence.")
+- **Meterless (engine patterns, implemented in Python from their published
+  specs — see `docs/meterless.md`):** Meterless publishes four engines as
+  prompt-based specs with a Context Packet structure, no SDK, and directs
+  builders to recreate the patterns in their own stack. This project is that
+  recreation: **World Model** = the day's declared frame + running state;
+  **H-MEM** = the journal row + day history every claim must cite, verified
+  by the Evaluator (provenance); **Markovian** = one bounded audit unit per
+  trade, nothing reaching a step except through the packet; **Scout Intent**
+  = the one question plus its guardrails (grade process, never P&L; never
+  predict; never signal), emitted by the Planner as the contract the Executor
+  follows and the Evaluator checks. Planner / Executor / Evaluator are roles
+  in sequence, not a Meterless engine. (Meterless's own use-case list names
+  this build: "Trading Journal Intelligence.")
 - **Cursor (build layer):** the project is built in Cursor; the repo history is
   the build log.
 
@@ -65,4 +67,6 @@ verdicts in `data/expected_verdicts.md` so every demo run is checkable.
 Build week Oct 22–27, 2026. Night 1: scaffold + frozen test set. Night 2
 (Oct 23): rule engine fully wired; audit verified 10/10 against the frozen
 answer key (`docs/sample-audit-output.txt`); Context Packet integration
-landed. Run it: `python3 run_audit.py`.
+landed. Night 3 (Oct 26): strict room ruling applied — trade #10 flips to
+FAIL (5 PASS / 5 FAIL); Meterless mapping rewritten to the four published
+engines (`docs/meterless.md`). Run it: `python3 run_audit.py`.

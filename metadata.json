@@ -7,7 +7,7 @@
   "builder": "David Titcombe (solo)",
   "sponsor_tech": {
     "zetaris": "Data layer. All journal lookups (trades + notes, joined) go through Zetaris as the data harness; the agent never reads journal files directly. Local CSV reader with the identical contract is the fallback until the instance is provisioned (see src/auditor/data_pipe.py).",
-    "meterless": "Engine pattern. Meterless publishes its engines (World State, Memory, Reasoning, Intent, Swarm) as a local-first, prompt-based context-layer pattern with a Context Packet structure — no SDK; builders recreate the pattern in their own stack. Recreated here in Python (src/auditor/context_packet.py): World State = the day's declared frame + running state; Memory = the journal row + day history every claim must cite; Reasoning = rule evaluation; Intent = the one question and its guardrails; Swarm = Planner / Executor / Evaluator working one packet in sequence.",
+    "meterless": "Engine patterns, implemented in Python from Meterless's published specs (see docs/meterless.md). Four engines, no SDK: World Model = the day's declared frame + running state; H-MEM = the journal row + day history every claim must cite, verified by the Evaluator (provenance); Markovian = one bounded audit unit per trade; Scout Intent = the one question plus guardrails, emitted by the Planner as the contract the Executor follows and the Evaluator checks. Planner / Executor / Evaluator are roles in sequence, not a Meterless engine.",
     "cursor": "Build layer. Project built in Cursor; git history is the build log."
   },
   "data": {
